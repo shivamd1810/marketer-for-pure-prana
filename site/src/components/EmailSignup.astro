@@ -27,14 +27,9 @@ const {
     )}
   </div>
   <form
-    name={`newsletter-${variant}`}
-    method="POST"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
-    action="/wellness-guide/thank-you/"
     class="email-signup__form"
+    data-source={variant}
   >
-    <input type="hidden" name="form-name" value={`newsletter-${variant}`} />
     <p class="hidden" aria-hidden="true">
       <label>Don't fill this out: <input name="bot-field" /></label>
     </p>
@@ -51,6 +46,7 @@ const {
         {showLeadMagnet ? "Get Free Guide" : "Subscribe"}
       </button>
     </div>
+    <p class="email-signup__status" style="display:none;"></p>
     <p class="email-signup__consent">
       By subscribing, you agree to receive emails from Pure Prana Ayurvedic.
       Unsubscribe anytime. We respect your privacy and will never share your information.
@@ -221,6 +217,12 @@ const {
     color: rgba(255, 255, 255, 0.5);
   }
 
+  .email-signup__status {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
   @media (max-width: 480px) {
     .email-signup__fields {
       flex-direction: column;
@@ -238,16 +240,55 @@ const {
 </style>
 
 <script>
-  // GA4 tracking for newsletter signups
   document.querySelectorAll('.email-signup__form').forEach(form => {
-    form.addEventListener('submit', () => {
-      if (typeof window.gtag === 'function') {
-        const variant = form.closest('.email-signup')?.className.match(/email-signup--(\w+)/)?.[1] || 'unknown';
-        window.gtag('event', 'newsletter_signup', {
-          event_category: 'engagement',
-          event_label: variant,
-          value: 1,
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = form.querySelector('input[name="email"]');
+      const botField = form.querySelector('input[name="bot-field"]');
+      const button = form.querySelector('.email-signup__button');
+      const statusEl = form.querySelector('.email-signup__status');
+      const source = form.dataset.source || 'unknown';
+
+      // Honeypot check
+      if (botField && botField.value) return;
+
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      button.disabled = true;
+      button.textContent = 'Submitting...';
+
+      try {
+        const resp = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source }),
         });
+
+        if (resp.ok) {
+          // GA4 tracking
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'newsletter_signup', {
+              event_category: 'engagement',
+              event_label: source,
+              value: 1,
+            });
+          }
+
+          statusEl.textContent = 'You\'re subscribed! Check your email for the wellness guide.';
+          statusEl.style.display = 'block';
+          statusEl.style.color = '#1a5c4c';
+          emailInput.value = '';
+          button.textContent = 'Subscribed!';
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        statusEl.textContent = 'Something went wrong. Please try again.';
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#e74c3c';
+        button.disabled = false;
+        button.textContent = source === 'footer' ? 'Subscribe' : 'Get Free Guide';
       }
     });
   });

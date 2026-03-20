@@ -39,7 +39,7 @@ export const products: Product[] = [
     ],
     amazonUrl: "https://www.amazon.com/dp/B0DZ23LJGJ",
     amazonAsin: "B0DZ23LJGJ",
-    price: "$29.95",
+    price: "$35.00",
     reviews: 489,
     rating: 4.8,
     capsules: 60,
