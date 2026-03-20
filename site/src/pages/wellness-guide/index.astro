@@ -1,0 +1,265 @@
+---
+import Base from "../../layouts/Base.astro";
+import EmailSignup from "../../components/EmailSignup.astro";
+---
+
+<Base
+  title="Free Ayurvedic Wellness Guide | Pure Prana"
+  description="Download your free Ayurvedic Wellness Guide. Learn daily routines, herb profiles, and recipes rooted in 5,000 years of ancient wisdom. Join 5,000+ wellness enthusiasts."
+>
+  <section class="guide-hero">
+    <div class="guide-container">
+      <div class="guide-content">
+        <p class="guide-eyebrow">Free Download</p>
+        <h1>Your Ayurvedic Wellness Guide</h1>
+        <p class="guide-subtitle">
+          15 pages of actionable Ayurvedic wisdom — daily routines, herb
+          profiles, and recipes to transform your health naturally.
+        </p>
+
+        <div class="guide-preview">
+          <div class="guide-preview-item">
+            <span class="preview-icon">🌅</span>
+            <div>
+              <strong>Daily Routines</strong>
+              <p>Morning and evening Ayurvedic rituals for balance</p>
+            </div>
+          </div>
+          <div class="guide-preview-item">
+            <span class="preview-icon">🌿</span>
+            <div>
+              <strong>Herb Profiles</strong>
+              <p>10 essential Ayurvedic herbs and their benefits</p>
+            </div>
+          </div>
+          <div class="guide-preview-item">
+            <span class="preview-icon">🍵</span>
+            <div>
+              <strong>Golden Recipes</strong>
+              <p>5 traditional recipes including Golden Milk and Tulsi Tea</p>
+            </div>
+          </div>
+          <div class="guide-preview-item">
+            <span class="preview-icon">🧘</span>
+            <div>
+              <strong>Dosha Guide</strong>
+              <p>Discover your body type and personalized wellness tips</p>
+            </div>
+          </div>
+        </div>
+
+        <EmailSignup
+          variant="hero"
+          heading="Get Your Free Guide"
+          description="Enter your email and we'll send the guide straight to your inbox. Plus, you'll get weekly Ayurvedic tips and exclusive discounts."
+        />
+
+        <div class="guide-trust">
+          <span>Join 5,000+ wellness enthusiasts</span>
+          <span class="trust-dot"></span>
+          <span>Unsubscribe anytime</span>
+          <span class="trust-dot"></span>
+          <span>No spam, ever</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-benefits">
+    <div class="section-container">
+      <h2>What You'll Learn</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h3>Ayurvedic Morning Routine</h3>
+          <p>
+            Start your day with tongue scraping, oil pulling, and warm lemon
+            water — simple habits that Ayurvedic practitioners have used for
+            millennia to detoxify and energize.
+          </p>
+        </div>
+        <div class="benefit-card">
+          <h3>Understanding Your Dosha</h3>
+          <p>
+            Learn whether you're Vata, Pitta, or Kapha dominant, and get
+            personalized diet, exercise, and supplement recommendations for your
+            unique constitution.
+          </p>
+        </div>
+        <div class="benefit-card">
+          <h3>Essential Herb Guide</h3>
+          <p>
+            Deep dives into Ashwagandha, Triphala, Brahmi, Tulsi, and more —
+            with dosage guidance, benefits, and how to incorporate them into your
+            daily routine.
+          </p>
+        </div>
+        <div class="benefit-card">
+          <h3>Traditional Recipes</h3>
+          <p>
+            Golden Milk for inflammation, Tulsi Tea for immunity, Triphala
+            Detox Water, and more — easy recipes you can make at home with
+            ingredients from your local store.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .guide-hero {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-light) 0%,
+      var(--color-bg-warm) 50%,
+      var(--color-accent-light) 100%
+    );
+    padding: 5rem 1.5rem;
+  }
+
+  .guide-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .guide-content {
+    text-align: center;
+  }
+
+  .guide-eyebrow {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .guide-content h1 {
+    font-size: 2.8rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1rem;
+  }
+
+  .guide-subtitle {
+    font-size: 1.15rem;
+    color: var(--color-text-light);
+    max-width: 550px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .guide-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 550px;
+    margin: 0 auto 2.5rem;
+    text-align: left;
+  }
+
+  .guide-preview-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .preview-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .guide-preview-item strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.15rem;
+  }
+
+  .guide-preview-item p {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .guide-trust {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+  }
+
+  .trust-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-text-light);
+    opacity: 0.5;
+  }
+
+  .guide-benefits {
+    padding: 5rem 1.5rem;
+    background: #fff;
+  }
+
+  .guide-benefits h2 {
+    font-size: 2rem;
+    color: var(--color-primary-dark);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .benefit-card {
+    padding: 2rem;
+    background: var(--color-bg-warm);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .benefit-card h3 {
+    font-size: 1.1rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .benefit-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .guide-content h1 {
+      font-size: 2rem;
+    }
+
+    .guide-preview {
+      grid-template-columns: 1fr;
+    }
+
+    .guide-trust {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .trust-dot {
+      display: none;
+    }
+  }
+</style>

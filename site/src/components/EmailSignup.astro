@@ -1,0 +1,254 @@
+---
+interface Props {
+  variant?: "inline" | "footer" | "hero";
+  heading?: string;
+  description?: string;
+  showLeadMagnet?: boolean;
+}
+
+const {
+  variant = "inline",
+  heading = "Get Your Free Ayurvedic Wellness Guide",
+  description = "Join 5,000+ wellness enthusiasts. Get our free guide plus weekly Ayurvedic tips, exclusive discounts, and new product alerts.",
+  showLeadMagnet = true,
+} = Astro.props;
+---
+
+<div class={`email-signup email-signup--${variant}`}>
+  <div class="email-signup__content">
+    {variant !== "footer" && <h3 class="email-signup__heading">{heading}</h3>}
+    {variant === "footer" && <h4 class="email-signup__heading">{heading}</h4>}
+    <p class="email-signup__description">{description}</p>
+    {showLeadMagnet && (
+      <div class="email-signup__lead-magnet">
+        <span class="lead-magnet-icon">📖</span>
+        <span class="lead-magnet-text">Free: <strong>Ayurvedic Wellness Guide</strong> — 15 pages of daily routines, herb profiles & recipes</span>
+      </div>
+    )}
+  </div>
+  <form
+    name={`newsletter-${variant}`}
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/wellness-guide/thank-you/"
+    class="email-signup__form"
+  >
+    <input type="hidden" name="form-name" value={`newsletter-${variant}`} />
+    <p class="hidden" aria-hidden="true">
+      <label>Don't fill this out: <input name="bot-field" /></label>
+    </p>
+    <div class="email-signup__fields">
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email address"
+        required
+        aria-label="Email address"
+        class="email-signup__input"
+      />
+      <button type="submit" class="email-signup__button">
+        {showLeadMagnet ? "Get Free Guide" : "Subscribe"}
+      </button>
+    </div>
+    <p class="email-signup__consent">
+      By subscribing, you agree to receive emails from Pure Prana Ayurvedic.
+      Unsubscribe anytime. We respect your privacy and will never share your information.
+    </p>
+  </form>
+</div>
+
+<style>
+  .hidden {
+    display: none !important;
+  }
+
+  .email-signup {
+    border-radius: var(--radius);
+  }
+
+  /* Inline variant (blog posts) */
+  .email-signup--inline {
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent-light) 100%);
+    padding: 2.5rem;
+    margin: 2.5rem 0;
+    border: 1px solid var(--color-border);
+  }
+
+  /* Hero variant (landing page) */
+  .email-signup--hero {
+    background: #fff;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Footer variant */
+  .email-signup--footer {
+    padding: 0;
+    background: transparent;
+  }
+
+  .email-signup__heading {
+    font-family: var(--font-heading);
+    color: var(--color-primary-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .email-signup--inline .email-signup__heading,
+  .email-signup--hero .email-signup__heading {
+    font-size: 1.4rem;
+  }
+
+  .email-signup--footer .email-signup__heading {
+    font-size: 1rem;
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .email-signup__description {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .email-signup--footer .email-signup__description {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+  }
+
+  .email-signup__lead-magnet {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--color-text);
+  }
+
+  .email-signup--footer .email-signup__lead-magnet {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .lead-magnet-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .email-signup__fields {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .email-signup__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-signup__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(26, 92, 76, 0.1);
+  }
+
+  .email-signup--footer .email-signup__input {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  .email-signup--footer .email-signup__input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .email-signup--footer .email-signup__input:focus {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  }
+
+  .email-signup__button {
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .email-signup__button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 92, 76, 0.3);
+  }
+
+  .email-signup--footer .email-signup__button {
+    background: var(--color-accent);
+  }
+
+  .email-signup--footer .email-signup__button:hover {
+    background: #d4a07a;
+  }
+
+  .email-signup__consent {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    line-height: 1.4;
+  }
+
+  .email-signup--footer .email-signup__consent {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 480px) {
+    .email-signup__fields {
+      flex-direction: column;
+    }
+
+    .email-signup__button {
+      width: 100%;
+    }
+
+    .email-signup--inline,
+    .email-signup--hero {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // GA4 tracking for newsletter signups
+  document.querySelectorAll('.email-signup__form').forEach(form => {
+    form.addEventListener('submit', () => {
+      if (typeof window.gtag === 'function') {
+        const variant = form.closest('.email-signup')?.className.match(/email-signup--(\w+)/)?.[1] || 'unknown';
+        window.gtag('event', 'newsletter_signup', {
+          event_category: 'engagement',
+          event_label: variant,
+          value: 1,
+        });
+      }
+    });
+  });
+</script>

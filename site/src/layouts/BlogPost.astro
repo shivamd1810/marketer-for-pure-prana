@@ -1,5 +1,6 @@
 ---
 import Base from "./Base.astro";
+import EmailSignup from "../components/EmailSignup.astro";
 
 interface Props {
   title: string;
@@ -53,6 +54,14 @@ const articleSchema = {
 
     <div class="blog-post-content">
       <slot />
+    </div>
+
+    <div class="blog-post-newsletter">
+      <EmailSignup
+        variant="inline"
+        heading="Enjoyed This Article?"
+        description="Get more Ayurvedic wellness tips delivered to your inbox, plus a free copy of our Ayurvedic Wellness Guide."
+      />
     </div>
 
     <div class="blog-post-cta">
@@ -161,6 +170,12 @@ const articleSchema = {
     background: var(--color-primary-light);
     border-radius: 0 var(--radius) var(--radius) 0;
     font-style: italic;
+  }
+
+  .blog-post-newsletter {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
   }
 
   .blog-post-cta {
