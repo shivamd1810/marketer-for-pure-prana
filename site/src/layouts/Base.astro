@@ -7,6 +7,12 @@ interface Props {
 
 const { title, description, canonical } = Astro.props;
 const siteUrl = "https://gopureprana.com";
+
+// GA4 Measurement ID — replace G-XXXXXXXXXX with your actual GA4 ID
+const GA4_ID = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID || "G-XXXXXXXXXX";
+
+// Amazon Attribution tag — set in env or leave empty until configured
+const AMAZON_ATTRIBUTION = import.meta.env.PUBLIC_AMAZON_ATTRIBUTION_TAG || "";
 ---
 
 <!doctype html>
@@ -27,8 +33,25 @@ const siteUrl = "https://gopureprana.com";
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Google Analytics 4 -->
+    {GA4_ID !== "G-XXXXXXXXXX" && (
+      <Fragment>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}></script>
+        <script is:inline define:vars={{ GA4_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', GA4_ID, {
+            send_page_view: true,
+            cookie_flags: 'SameSite=None;Secure',
+          });
+        </script>
+      </Fragment>
+    )}
   </head>
-  <body>
+  <body data-amazon-attribution={AMAZON_ATTRIBUTION}>
     <header class="site-header">
       <nav class="nav-container">
         <a href="/" class="logo">
@@ -92,6 +115,9 @@ const siteUrl = "https://gopureprana.com";
         </div>
       </div>
     </footer>
+
+    <!-- Amazon outbound click tracking -->
+    <script src="../scripts/tracking.js"></script>
 
     <style is:global>
       *,
