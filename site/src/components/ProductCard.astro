@@ -1,0 +1,140 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  tagline: string;
+  category: string;
+  price: string;
+  rating: number;
+  reviews: number;
+  icon: string;
+  amazonUrl: string;
+}
+
+const { slug, name, tagline, category, price, rating, reviews, icon, amazonUrl } = Astro.props;
+const stars = "★".repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? "½" : "");
+---
+
+<article class="product-card">
+  <a href={`/products/${slug}/`} class="card-link">
+    <div class="card-icon">{icon}</div>
+    <span class="card-category">{category}</span>
+    <h3 class="card-title">{name}</h3>
+    <p class="card-tagline">{tagline}</p>
+    <div class="card-meta">
+      <span class="card-rating">{stars} {rating}</span>
+      <span class="card-reviews">({reviews} reviews)</span>
+    </div>
+    <div class="card-price">{price}</div>
+  </a>
+  <div class="card-actions">
+    <a href={`/products/${slug}/`} class="btn-details">Learn More</a>
+    <a href={amazonUrl} target="_blank" rel="noopener noreferrer" class="btn-amazon">
+      Buy on Amazon
+    </a>
+  </div>
+</article>
+
+<style>
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card-link {
+    display: block;
+    padding: 2rem 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: var(--color-primary-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-tagline {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-meta {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-rating {
+    color: var(--color-amazon);
+    font-weight: 600;
+  }
+
+  .card-reviews {
+    color: var(--color-text-light);
+  }
+
+  .card-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .card-actions a {
+    flex: 1;
+    padding: 0.85rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-details {
+    color: var(--color-primary);
+    border-right: 1px solid var(--color-border);
+  }
+
+  .btn-details:hover {
+    background: var(--color-primary-light);
+  }
+
+  .btn-amazon {
+    color: #fff;
+    background: var(--color-amazon);
+  }
+
+  .btn-amazon:hover {
+    background: var(--color-amazon-dark);
+  }
+</style>
