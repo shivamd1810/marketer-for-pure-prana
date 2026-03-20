@@ -1,0 +1,221 @@
+---
+import Base from "./Base.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  publishDate: string;
+  author: string;
+  keywords: string[];
+}
+
+const { title, description, publishDate, author, keywords } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, "https://gopureprana.com").href;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description: description,
+  author: {
+    "@type": "Organization",
+    name: "Pure Prana Ayurvedic",
+    url: "https://gopureprana.com",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Pure Prana Ayurvedic",
+    url: "https://gopureprana.com",
+  },
+  datePublished: publishDate,
+  dateModified: publishDate,
+  mainEntityOfPage: canonicalUrl,
+  keywords: keywords.join(", "),
+};
+---
+
+<Base title={`${title} | Pure Prana Ayurvedic Blog`} description={description} canonical={canonicalUrl}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <article class="blog-post">
+    <div class="blog-post-header">
+      <div class="blog-post-header-inner">
+        <nav class="breadcrumb">
+          <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; <span>{title}</span>
+        </nav>
+        <h1>{title}</h1>
+        <div class="blog-post-meta">
+          <span class="blog-post-author">By {author}</span>
+          <span class="blog-post-date">{new Date(publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <slot />
+    </div>
+
+    <div class="blog-post-cta">
+      <h3>Discover Pure Prana Ayurvedic Supplements</h3>
+      <p>Explore our full range of premium, plant-based Ayurvedic supplements — GMP-certified, third-party tested, and made in the USA.</p>
+      <a href="/#products" class="btn btn-primary">Shop All Products</a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .blog-post-header {
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-warm) 100%);
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .blog-post-header-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb a {
+    color: var(--color-primary);
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .blog-post-header h1 {
+    font-size: 2.4rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .blog-post-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+  }
+
+  .blog-post-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  .blog-post-content :global(h2) {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--color-primary-dark);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-post-content :global(h3) {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-post-content :global(p) {
+    margin-bottom: 1.25rem;
+    color: var(--color-text);
+  }
+
+  .blog-post-content :global(ul),
+  .blog-post-content :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .blog-post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-post-content :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .blog-post-content :global(a:hover) {
+    color: var(--color-primary-dark);
+  }
+
+  .blog-post-content :global(strong) {
+    color: var(--color-primary-dark);
+  }
+
+  .blog-post-content :global(blockquote) {
+    border-left: 4px solid var(--color-primary);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--color-primary-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+  }
+
+  .blog-post-cta {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 2.5rem;
+    background: var(--color-primary-light);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+
+  .blog-post-cta h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-post-cta p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.9rem 2.2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 100px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 92, 76, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .blog-post-header h1 {
+      font-size: 1.8rem;
+    }
+
+    .blog-post-meta {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>

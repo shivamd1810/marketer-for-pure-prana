@@ -1,0 +1,129 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+---
+
+<Base
+  title="Ayurvedic Wellness Blog | Pure Prana"
+  description="Explore expert articles on Ayurvedic herbs, natural supplements, and holistic wellness. Learn about ashwagandha, triphala, turmeric, and more from Pure Prana."
+  canonical="https://gopureprana.com/blog/"
+>
+  <section class="blog-hero">
+    <div class="blog-hero-inner">
+      <h1>Ayurvedic Wellness Blog</h1>
+      <p>Expert insights on Ayurvedic herbs, natural remedies, and holistic health — backed by tradition and modern science.</p>
+    </div>
+  </section>
+
+  <section class="blog-list-section">
+    <div class="blog-list-container">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}/`} class="blog-card">
+          <div class="blog-card-content">
+            <div class="blog-card-meta">
+              <span>{new Date(post.data.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            </div>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.description}</p>
+            <span class="read-more">Read Article &rarr;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .blog-hero {
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-warm) 50%, var(--color-accent-light) 100%);
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+  }
+
+  .blog-hero-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .blog-hero h1 {
+    font-size: 2.8rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 1rem;
+  }
+
+  .blog-hero p {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+  }
+
+  .blog-list-section {
+    padding: 4rem 1.5rem;
+    background: var(--color-bg-warm);
+  }
+
+  .blog-list-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .blog-card-content {
+    padding: 2rem;
+  }
+
+  .blog-card-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-card h2 {
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .blog-card p {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .read-more {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-hero h1 {
+      font-size: 2rem;
+    }
+
+    .blog-list-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
