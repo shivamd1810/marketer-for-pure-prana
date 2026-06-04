@@ -1,5 +1,25 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" }
+  ],
+  "redirects": [
+    {
+      "source": "/lthanks",
+      "has": [{ "type": "host", "value": "(www\\.)?thepureprana\\.com" }],
+      "destination": "https://gopureprana.com/free-wellnessplan",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "(www\\.)?thepureprana\\.com" }],
+      "destination": "https://gopureprana.com/",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "(www\\.)?thepureprana\\.com" }],
+      "destination": "https://gopureprana.com/:path*",
+      "permanent": false
+    }
   ]
 }
