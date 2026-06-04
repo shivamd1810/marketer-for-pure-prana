@@ -1,0 +1,276 @@
+---
+import Base from "../../layouts/Base.astro";
+import { products } from "../../data/products";
+
+// Generic fallback plan — for buyers who skip the product picker or whose
+// product isn't on the site yet. Real value, no dead end, links to all plans.
+---
+
+<Base
+  title="Your 30-Day Ritual Plan | Pure Prana Ayurvedic"
+  description="The universal 30-day plan for getting the most from any Pure Prana blend — dosing habits, weekly roadmap, and the mistakes that waste a bottle."
+>
+  <article class="plan">
+    <header class="plan-hero">
+      <span class="plan-icon">🌿</span>
+      <h1>Your 30-Day Ritual Plan</h1>
+      <p class="plan-intro">
+        This is yours to keep — tap <strong>Save / Print as PDF</strong> below,
+        or just bookmark this page. Welcome to Pure Prana.
+      </p>
+      <button class="plan-print btn-print" type="button">⬇ Save / Print as PDF</button>
+    </header>
+
+    <div class="plan-body">
+      <section class="plan-card">
+        <h2><span class="plan-num">1</span> How to take it</h2>
+        <p>
+          Take 2 capsules daily with food, at the same time every day. Most
+          herbal blends absorb best alongside a meal — and a fixed time is what
+          turns a bottle into a ritual. Check your label for any
+          product-specific timing.
+        </p>
+      </section>
+
+      <section class="plan-card">
+        <h2><span class="plan-num">2</span> Your 30-day roadmap</h2>
+        <ul class="plan-roadmap">
+          <li><strong>Days 1–3</strong><span>Lock in the habit. Put the bottle where you can't miss it — next to your coffee, toothbrush, or breakfast plate.</span></li>
+          <li><strong>Week 1</strong><span>Your routine settles in. Traditional botanicals build gradually — consistency matters more than anything you feel yet.</span></li>
+          <li><strong>Weeks 2–3</strong><span>This is when most people start noticing their blend's support working with their daily habits. Don't change anything — keep going.</span></li>
+          <li><strong>Week 4</strong><span>Reassess vs. day 1 — and reorder before you run out. A 60-count bottle lasts ~30 days at 2/day.</span></li>
+        </ul>
+      </section>
+
+      <section class="plan-card">
+        <h2><span class="plan-num">3</span> Amplify it — 3 daily habits</h2>
+        <ul class="plan-list">
+          <li>Steady hydration — herbs work best in a well-hydrated body</li>
+          <li>10 minutes of daily movement — a walk is enough</li>
+          <li>A consistent sleep window — every system you're supporting recovers at night</li>
+        </ul>
+      </section>
+
+      <section class="plan-card">
+        <h2><span class="plan-num">4</span> The 5 bottle-wasting mistakes</h2>
+        <ul class="plan-list plan-list--warn">
+          <li>Taking it on an empty stomach (poor absorption, wasted capsules)</li>
+          <li>Skipping days — daily consistency is how botanicals build</li>
+          <li>Quitting at day 5 because you don't "feel it" yet</li>
+          <li>Doubling up after a missed dose — just resume your normal amount</li>
+          <li>Storing the bottle somewhere hot and humid (like a bathroom shelf)</li>
+        </ul>
+      </section>
+
+      <section class="plan-card">
+        <h2><span class="plan-num">5</span> Get your blend's exact plan</h2>
+        <p>Each Pure Prana blend has its own tuned version of this plan — dosing trick, weekly roadmap, and pairings:</p>
+        <ul class="plan-links">
+          {products.map((product) => (
+            <li>
+              <a href={`/free-wellnessplan/${product.slug}/`}>
+                {product.icon} {product.name} plan →
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    <section class="plan-extra plan-bonus">
+      <p>
+        Want the bigger picture?
+        <a href="/wellness-guide/">Get our free 15-page Ayurvedic Wellness Guide →</a>
+      </p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .plan-hero {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-light) 0%,
+      var(--color-bg-warm) 100%
+    );
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .plan-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .plan-hero h1 {
+    font-size: 1.9rem;
+    color: var(--color-primary-dark);
+    max-width: 560px;
+    margin: 0 auto 0.75rem;
+  }
+
+  .plan-intro {
+    color: var(--color-text-light);
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .plan-print {
+    padding: 0.8rem 1.6rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .plan-print:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .plan-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .plan-card {
+    background: var(--color-bg-warm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .plan-card h2 {
+    font-size: 1.15rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .plan-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .plan-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .plan-roadmap {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .plan-roadmap li {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .plan-roadmap strong {
+    color: var(--color-primary);
+  }
+
+  .plan-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .plan-list li::before {
+    content: "✓ ";
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .plan-list--warn li::before {
+    content: "✗ ";
+    color: #c0392b;
+  }
+
+  .plan-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .plan-links a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .plan-extra {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .plan-bonus {
+    text-align: center;
+    padding-bottom: 3rem;
+  }
+
+  .plan-bonus a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  @media print {
+    :global(.site-header),
+    :global(.site-footer),
+    .plan-print,
+    .plan-bonus {
+      display: none !important;
+    }
+
+    .plan-card {
+      break-inside: avoid;
+      border: 1px solid #ccc;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .plan-hero h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll(".btn-print").forEach((btn) => {
+    btn.addEventListener("click", () => window.print());
+  });
+</script>

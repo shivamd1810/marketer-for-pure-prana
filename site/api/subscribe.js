@@ -1,6 +1,9 @@
-// Vercel serverless function to capture email signups
-// Emails are stored in Vercel KV if configured, otherwise logged and returned
-// To persist emails, set up Vercel KV or connect to an email service provider
+// Vercel serverless function to capture email signups.
+// Primary (and only) storage: a Google Sheet via an Apps Script webhook
+// (GOOGLE_SHEETS_WEBHOOK_URL). This endpoint FAILS LOUDLY when storage is
+// missing or broken — a non-200 + error log — so signups can never silently
+// vanish again. Clients treat capture as best-effort and never gate the
+// user's deliverable on this response.
 
 export default async function handler(req, res) {
   // CORS headers
@@ -17,61 +20,49 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, source } = req.body;
+    const { email, product, source } = req.body || {};
 
     if (!email || !email.includes("@")) {
       return res.status(400).json({ error: "Valid email is required" });
     }
 
-    const timestamp = new Date().toISOString();
-    const entry = { email, source: source || "unknown", timestamp };
+    const entry = {
+      email,
+      product: product || "unknown",
+      source: source || "unknown",
+      timestamp: new Date().toISOString(), // server-stamped
+    };
 
-    // Log the signup (always visible in Vercel function logs)
+    // Always visible in Vercel function logs — the audit trail.
     console.log("EMAIL_SIGNUP:", JSON.stringify(entry));
 
-    // If Google Sheets webhook URL is configured, forward there
     const sheetsWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-    if (sheetsWebhook) {
-      try {
-        await fetch(sheetsWebhook, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(entry),
-        });
-      } catch (err) {
-        console.error("Google Sheets webhook failed:", err.message);
-      }
+    if (!sheetsWebhook) {
+      console.error(
+        "EMAIL_SIGNUP_STORAGE_MISSING: GOOGLE_SHEETS_WEBHOOK_URL is not set — signup logged above but NOT persisted:",
+        entry.email
+      );
+      return res.status(500).json({ error: "Storage not configured" });
     }
 
-    // If Mailchimp is configured, add subscriber
-    const mcApiKey = process.env.MAILCHIMP_API_KEY;
-    const mcListId = process.env.MAILCHIMP_LIST_ID;
-    if (mcApiKey && mcListId) {
-      const dc = mcApiKey.split("-").pop();
-      try {
-        await fetch(
-          `https://${dc}.api.mailchimp.com/3.0/lists/${mcListId}/members`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${mcApiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email_address: email,
-              status: "subscribed",
-              tags: [source || "website"],
-            }),
-          }
-        );
-      } catch (err) {
-        console.error("Mailchimp subscription failed:", err.message);
-      }
+    const webhookResp = await fetch(sheetsWebhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry),
+    });
+
+    if (!webhookResp.ok) {
+      const text = await webhookResp.text().catch(() => "");
+      console.error(
+        `EMAIL_SIGNUP_STORAGE_FAILED: Sheets webhook returned ${webhookResp.status}: ${text} — entry:`,
+        JSON.stringify(entry)
+      );
+      return res.status(502).json({ error: "Storage write failed" });
     }
 
     return res.status(200).json({ success: true, message: "Subscribed!" });
   } catch (err) {
-    console.error("Subscribe error:", err);
+    console.error("EMAIL_SIGNUP_ERROR:", err);
     return res.status(500).json({ error: "Server error" });
   }
 }
